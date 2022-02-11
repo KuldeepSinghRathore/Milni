@@ -42,7 +42,7 @@ const initialState = {
   email,
   isLoggedIn,
   status: "idle",
-  error: "",
+  error: null,
 }
 
 export const userSlice = createSlice({
@@ -58,7 +58,7 @@ export const userSlice = createSlice({
         "username",
         JSON.stringify(action.payload.user.username)
       )
-      localStorage.setItem("userId", JSON.stringify(action.payload.user.userId))
+      localStorage.setItem("userId", JSON.stringify(action.payload.user._id))
       localStorage.setItem("token", JSON.stringify(action.payload.token))
       localStorage.setItem("email", JSON.stringify(action.payload.user.email))
       localStorage.setItem("isLoggedIn", JSON.stringify(true))
@@ -82,7 +82,7 @@ export const userSlice = createSlice({
         "username",
         JSON.stringify(action.payload.user.username)
       )
-      localStorage.setItem("userId", JSON.stringify(action.payload.user.userId))
+      localStorage.setItem("userId", JSON.stringify(action.payload.user._id))
       localStorage.setItem("token", JSON.stringify(action.payload.token))
       localStorage.setItem("email", JSON.stringify(action.payload.user.email))
       localStorage.setItem("isLoggedIn", JSON.stringify(true))
