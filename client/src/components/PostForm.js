@@ -1,16 +1,18 @@
 import { createPostPressed } from "features/posts/postSlice"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { CloudUpload } from "./CloudUpload"
 
 export const PostForm = () => {
   const [description, setDescription] = useState("")
   const { token } = useSelector((state) => state.users)
+  const { postStatus, error } = useSelector((state) => state.posts)
   const dispatch = useDispatch()
   const [url, setUrl] = useState()
+  const [controlUpload, setControlUpload] = useState(false)
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (description !== "") {
+    if (description !== "" && !controlUpload) {
       // console.log(description, url)
       const postData = {
         description,
@@ -19,12 +21,20 @@ export const PostForm = () => {
       dispatch(createPostPressed({ postData, token }))
     }
   }
+
+  useEffect(() => {
+    if (postStatus === "fulfilled") {
+      setDescription("")
+      setUrl("")
+    }
+  }, [postStatus])
+
   return (
-    <div
-      className=" mt-6 flex items-center  justify-center "
-      onSubmit={handleSubmit}
-    >
-      <form className="flex  flex-col border-red-400 bg-gray-200 p-5 shadow-md">
+    <div className=" mt-6 flex items-center  justify-center ">
+      <form
+        className="flex  flex-col border-red-400 bg-gray-200 p-5 shadow-md"
+        onSubmit={handleSubmit}
+      >
         <div className=" ">
           <textarea
             name="description"
@@ -36,7 +46,11 @@ export const PostForm = () => {
           />
         </div>
         {/* <input type="file" name="file" /> */}
-        <CloudUpload url={url} setUrl={setUrl} />
+        <CloudUpload
+          url={url}
+          setUrl={setUrl}
+          setControlUpload={setControlUpload}
+        />
         <div className="flex flex-col justify-between gap-3">
           <input
             type="submit"

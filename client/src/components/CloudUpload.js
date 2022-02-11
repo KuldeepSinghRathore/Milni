@@ -1,17 +1,20 @@
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { cloudinary_preset, cloudname } from "utils/API"
 
-export const CloudUpload = ({ url, setUrl }) => {
+export const CloudUpload = ({ url, setUrl, setControlUpload }) => {
   const [imageSrc, setImageSrc] = useState()
 
   const [image, setImage] = useState()
-
+  const ref = useRef()
+  const reset = () => {
+    ref.current.value = null
+  }
   const handleOnChange = (changeEvent) => {
     setImage(changeEvent.target.files[0])
     const reader = new FileReader()
     reader.onload = (onLoadEvent) => {
       setImageSrc(onLoadEvent.target.result)
-      setUrl(undefined)
+      // setUrl(undefined)
     }
     reader.readAsDataURL(changeEvent.target.files[0])
   }
@@ -19,6 +22,7 @@ export const CloudUpload = ({ url, setUrl }) => {
 
   //   upload image with clodinary
   const uploadImage = () => {
+    setControlUpload(true)
     const data = new FormData()
     data.append("file", image)
     data.append("upload_preset", cloudinary_preset)
@@ -30,14 +34,23 @@ export const CloudUpload = ({ url, setUrl }) => {
       .then((resp) => resp.json())
       .then((data) => {
         setUrl(data.url)
+        setControlUpload(false)
+        setImageSrc(undefined)
+        setImage(undefined)
+        reset()
       })
       .catch((err) => console.log(err))
   }
-
+  const restCloudUpload = () => {
+    setUrl(undefined)
+    setImageSrc(undefined)
+    setImage(undefined)
+    reset()
+  }
   return (
     <div>
       <div className="flex  flex-col border-red-400 bg-gray-200 p-5 shadow-md">
-        <input type="file" name="file" onChange={handleOnChange} />
+        <input type="file" name="file" onChange={handleOnChange} ref={ref} />
         {url ? (
           <img
             src={url}
@@ -58,6 +71,7 @@ export const CloudUpload = ({ url, setUrl }) => {
             >
               Upload Image
             </button>
+            <button onClick={restCloudUpload}>❌</button>
           </p>
         )}
       </div>

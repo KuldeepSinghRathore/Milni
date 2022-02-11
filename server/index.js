@@ -6,6 +6,7 @@ const morgan = require("morgan")
 const cors = require("cors")
 //import routes
 const userRouter = require("./routes/user.route")
+const postRouter = require("./routes/post.route")
 const { connectDb } = require("./database/connectDb")
 const errorMiddleware = require("./middlewares/error")
 const verifyAuth = require("./middlewares/verifyAuth")
@@ -27,14 +28,10 @@ connectDb()
 
 // routes
 app.use("/api/v1", userRouter)
+app.use("/api/v1/posts", verifyAuth, postRouter)
 // error handling middleware
 // Generic error middleware
-// app.use(function (error, req, res, next) {
-//   console.log("error", error)
-//   res.status(500)
-//   res.setHeader("Content-Type", "application/json")
-//   res.json({ error: "Failed to process request" })
-// })
+
 app.use(errorMiddleware)
 const server = app.listen(process.env.PORT, () => {
   console.log(

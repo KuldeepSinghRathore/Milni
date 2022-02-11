@@ -33,7 +33,7 @@ export const LoginForm = () => {
   //   }, [navigate, token])
 
   return (
-    <div className="main m-auto mt-10 w-max">
+    <div className=" m-auto mt-10 w-max">
       <div className="">
         <div className="flex items-center justify-between">
           <h2 className="mb-6 text-2xl">Login</h2>
