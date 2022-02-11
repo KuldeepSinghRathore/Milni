@@ -1,12 +1,12 @@
-// import { signUpPressed } from "features/user/userSlice"
+import { signUpPressed } from "features/users/userSlice"
 import React, { useState } from "react"
-// import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 export const SignUpForm = () => {
-  //   const dispatch = useDispatch()
-  //   const navigate = useNavigate()
-  //   const { error } = useSelector((state) => state.users)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { error } = useSelector((state) => state.users)
   const [signUpData, setSignUpData] = useState({
     username: "",
     email: "",
@@ -21,9 +21,9 @@ export const SignUpForm = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    // dispatch(signUpPressed(signUpData))
+    dispatch(signUpPressed(signUpData))
     // navigate("/")
-    console.log(JSON.stringify(signUpData))
+    // console.log(JSON.stringify(signUpData))
   }
   return (
     <div>
@@ -75,11 +75,11 @@ export const SignUpForm = () => {
               autoComplete={"off"}
             />
           </div>
-          {/* {error && (
+          {error && (
             <div className="show_info mb-4 w-max text-sm text-red-400">
               {error}
             </div>
-          )} */}
+          )}
           {signUpData.password.length === confirmPass.length &&
             signUpData.password !== confirmPass && (
               <div className="show_info mb-4 w-max text-sm text-red-400">

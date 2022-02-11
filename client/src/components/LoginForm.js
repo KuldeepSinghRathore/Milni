@@ -1,12 +1,12 @@
-// import { loginPressed } from "features/user/userSlice"
+import { loginPressed } from "features/users/userSlice"
 import React, { useEffect, useState } from "react"
-// import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 export const LoginForm = () => {
-  //   const { error, token } = useSelector((state) => state.users)
-  //   const navigate = useNavigate()
-  //   const dispatch = useDispatch()
+  const { error, token } = useSelector((state) => state.users)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -21,8 +21,8 @@ export const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (loginData.password !== "" && loginData.email !== "") {
-      //   dispatch(loginPressed(loginData))
-      console.log(JSON.stringify(loginData))
+      dispatch(loginPressed(loginData))
+      // console.log(JSON.stringify(loginData))
     }
   }
 
@@ -99,7 +99,7 @@ export const LoginForm = () => {
           </div>
 
           <div className="show_info mb-4 w-max text-sm text-red-400">
-            {/* {error} */}
+            {error}
           </div>
 
           <div className="submit mb-4 cursor-pointer rounded border bg-blue-600 text-white">
