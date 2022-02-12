@@ -97,21 +97,84 @@ const loginUser = catchAsyncHandler(async (req, res, next) => {
     },
   })
 })
-
-const userLabelUpdate = catchAsyncHandler(async (req, res, next) => {
-  const { userId } = req
-  const { label } = req.body
-  const userFromDb = await User.findById(userId)
-  if (!userFromDb) {
-    return next(new ErrorHandler("User not found", 404))
-  }
-  userFromDb.labels = userFromDb.labels.filter((item) => item !== label)
-
-  userFromDb.labels.push(label)
-  const updatedUser = await userFromDb.save()
+const getAllUsers = catchAsyncHandler(async (req, res, next) => {
+  const users = await User.find()
   res.status(200).json({
     success: true,
-    labels: updatedUser.labels,
+    message: "Users fetched successfully",
+    allUsers: users,
   })
 })
-module.exports = { signupUser, loginUser, userLabelUpdate }
+
+const getUserProfileData = catchAsyncHandler(async (req, res, next) => {
+  const { userId } = req.params
+  const user = await User.findById(userId)
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404))
+  }
+  res.status(200).json({
+    success: true,
+    message: "User Data fetched successfully",
+    userProfileData: user,
+  })
+})
+
+const followUser = catchAsyncHandler(async (req, res, next) => {
+  const { followId } = req.params
+  const { userId } = req
+  const user = await User.findById(userId)
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404))
+  }
+  const followUser = await User.findById(followId)
+  if (!followUser) {
+    return next(new ErrorHandler("User not found", 404))
+  }
+
+  const isAlreadyFollowed = user.following.find(
+    (follow) => follow.toString() === followId.toString()
+  )
+  const isAlreadyFollowedBy = followUser.followers.find(
+    (follow) => follow.toString() === userId.toString()
+  )
+
+  if (isAlreadyFollowed || isAlreadyFollowedBy) {
+    followUser.followers = followUser.followers.filter(
+      (i) => i.toString() !== userId
+    )
+    user.following = user.following.filter((i) => i.toString() !== followId)
+    let updateFollowUser = await followUser.save()
+    updateFollowUser = await updateFollowUser.populate("followers")
+    let updateUser = await user.save()
+    updateUser = await updateUser.populate("following")
+    return res.status(200).json({
+      success: true,
+      message: "User UnFollowed Successfully",
+      updateFollowUser,
+      updateUser,
+    })
+  }
+  followUser.followers.push(userId)
+  user.following.push(followId)
+  let updateFollowUser = await followUser.save()
+  updateFollowUser = await updateFollowUser.populate("followers")
+  let updateUser = await user.save()
+  updateUser = await updateUser.populate("following")
+
+  // const followData= await updateFollowUser.populate("followers").execPopulate()
+
+  return res.status(200).json({
+    success: true,
+    message: "User Followed Successfully",
+    updateFollowUser,
+    updateUser,
+  })
+})
+
+module.exports = {
+  signupUser,
+  loginUser,
+  getAllUsers,
+  getUserProfileData,
+  followUser,
+}

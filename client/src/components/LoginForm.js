@@ -1,10 +1,15 @@
-import { loginPressed } from "features/users/userSlice"
+import {
+  getAllUsers,
+  loginPressed,
+  resetAuthStatus,
+} from "features/users/userSlice"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 export const LoginForm = () => {
   const { error, token } = useSelector((state) => state.users)
+  const { status, isLoggedIn } = useSelector((state) => state.users)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [loginData, setLoginData] = useState({
@@ -18,19 +23,25 @@ export const LoginForm = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (loginData.password !== "" && loginData.email !== "") {
-      dispatch(loginPressed(loginData))
+      await dispatch(loginPressed(loginData))
       // console.log(JSON.stringify(loginData))
     }
   }
 
-  //   useEffect(() => {
-  //     if (token) {
-  //       navigate("/")
-  //     }
-  //   }, [navigate, token])
+  useEffect(() => {
+    if (token && isLoggedIn) {
+      dispatch(resetAuthStatus())
+    }
+  }, [token, isLoggedIn, dispatch])
+
+  useEffect(() => {
+    if (token) {
+      navigate("/")
+    }
+  }, [navigate, token])
 
   return (
     <div className=" m-auto mt-10 w-max">
@@ -98,7 +109,7 @@ export const LoginForm = () => {
             />
           </div>
 
-          <div className="show_info mb-4 w-max text-sm text-red-400">
+          <div className="show_info mb-4 w-max text-sm font-bold text-red-500">
             {error}
           </div>
 

@@ -43,6 +43,28 @@ export const getAllPosts = createAsyncThunk(
   }
 )
 
+export const likeButtonPressed = createAsyncThunk(
+  "posts/likeButtonPressed",
+  async ({ postId, token }, { rejectWithValue }) => {
+    console.log(postId, "postId likeButtoPressed", token, "token")
+    try {
+      const response = await axios.post(
+        `${API}/posts/like/${postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.log(error)
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -67,6 +89,21 @@ export const postsSlice = createSlice({
       state.postStatus = "fulfilled"
     },
     [getAllPosts.rejected]: (state, action) => {
+      state.error = action.payload.message
+      state.postStatus = "rejected"
+    },
+    [likeButtonPressed.pending]: (state) => {
+      state.postStatus = "pending"
+    },
+    [likeButtonPressed.fulfilled]: (state, action) => {
+      // state.posts = action.payload
+      const postIndex = state.posts.findIndex(
+        (post) => post._id === action.payload.updatedLikes._id
+      )
+      state.posts[postIndex].likes = action.payload.updatedLikes.likes
+      state.postStatus = "fulfilled"
+    },
+    [likeButtonPressed.rejected]: (state, action) => {
       state.error = action.payload.message
       state.postStatus = "rejected"
     },

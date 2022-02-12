@@ -34,6 +34,23 @@ export const loginPressed = createAsyncThunk(
   }
 )
 
+export const getAllUsers = createAsyncThunk(
+  "users/getAllUsers",
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API}/users/allusers`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 const initialState = {
   userProfile: null,
   username,
@@ -43,12 +60,26 @@ const initialState = {
   isLoggedIn,
   status: "idle",
   error: null,
+  allUsers: [],
 }
 
 export const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    resetAuthStatus: (state) => {
+      state.status = "idle"
+      state.error = null
+    },
+    logOutPressed: (state) => {
+      localStorage.clear()
+      state.username = null
+      state.userId = null
+      state.token = null
+      state.email = null
+      state.isLoggedIn = false
+    },
+  },
   extraReducers: {
     [signUpPressed.pending]: (state) => {
       state.status = "pending"
@@ -58,12 +89,15 @@ export const userSlice = createSlice({
         "username",
         JSON.stringify(action.payload.user.username)
       )
-      localStorage.setItem("userId", JSON.stringify(action.payload.user._id))
+      localStorage.setItem(
+        "userId",
+        JSON.stringify(action.payload.userProfile.user._id)
+      )
       localStorage.setItem("token", JSON.stringify(action.payload.token))
       localStorage.setItem("email", JSON.stringify(action.payload.user.email))
       localStorage.setItem("isLoggedIn", JSON.stringify(true))
       state.username = action.payload.user.username
-      state.userId = action.payload.user.userId
+      state.userId = action.payload.user.userProfile._id
       state.token = action.payload.token
       state.email = action.payload.user.email
       state.userProfile = action.payload.user
@@ -87,7 +121,7 @@ export const userSlice = createSlice({
       localStorage.setItem("email", JSON.stringify(action.payload.user.email))
       localStorage.setItem("isLoggedIn", JSON.stringify(true))
       state.username = action.payload.user.username
-      state.userId = action.payload.user.userId
+      state.userId = action.payload.user._id
       state.token = action.payload.token
       state.email = action.payload.user.email
       state.userProfile = action.payload.user
@@ -98,7 +132,18 @@ export const userSlice = createSlice({
       state.status = "rejected"
       state.error = action.payload.message
     },
+    [getAllUsers.pending]: (state) => {
+      state.status = "pending"
+    },
+    [getAllUsers.fulfilled]: (state, action) => {
+      state.allUsers = action.payload.allUsers
+      state.status = "fulfilled"
+    },
+    [getAllUsers.rejected]: (state, action) => {
+      state.error = action.payload.message
+      state.status = "rejected"
+    },
   },
 })
-
+export const { resetAuthStatus, logOutPressed } = userSlice.actions
 export default userSlice.reducer

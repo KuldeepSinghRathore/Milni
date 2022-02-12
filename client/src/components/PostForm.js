@@ -54,7 +54,7 @@ export const PostForm = () => {
         <div className="flex flex-col justify-between gap-3">
           <input
             type="submit"
-            className="w-fit self-end bg-blue-400 py-2 px-4 font-bold text-blue-900"
+            className="w-fit cursor-pointer self-end bg-blue-400 py-2 px-4 font-bold text-blue-900"
             value={"Create Post"}
           />
         </div>

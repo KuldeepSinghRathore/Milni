@@ -1,8 +1,22 @@
+import { likeButtonPressed } from "features/posts/postSlice"
 import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+export const isAlreadyExist = (postArr, userIdToCompare) => {
+  if (!postArr.length > 0) {
+    return false
+  }
+  return (
+    postArr?.findIndex((userId) => userId.toString() === userIdToCompare) !== -1
+  )
+}
 
-export const PostCard = ({ singlePost }) => {
+export const PostCard = ({ singlePost, userData }) => {
   const { FaCommentAlt, FaRegCommentAlt } = require("react-icons/fa")
   const { AiFillHeart, AiOutlineHeart } = require("react-icons/ai")
+  const dispatch = useDispatch()
+  const { token, userId } = useSelector((state) => state.users)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -15,7 +29,10 @@ export const PostCard = ({ singlePost }) => {
         <div className="flex-1">
           <div>
             <div>
-              <h2 className="text-xl font-bold">
+              <h2
+                className="cursor-pointer text-xl font-bold"
+                onClick={() => navigate(`profile/${singlePost.userId._id}`)}
+              >
                 {singlePost.userId.username}
               </h2>
               <p className="text-xs">@{singlePost.userId.username}</p>
@@ -31,14 +48,34 @@ export const PostCard = ({ singlePost }) => {
           </div>
           <div className="flex   justify-between p-2">
             <div className="flex items-center gap-2">
-              <AiOutlineHeart />
-              <AiFillHeart />
-              <span> 5</span>
+              {/* {console.log(isExist, "singlePost.likes")} */}
+              {isAlreadyExist(singlePost?.likes, userId) ? (
+                <AiFillHeart
+                  onClick={() => {
+                    const data = {
+                      postId: singlePost._id,
+                      token,
+                    }
+                    dispatch(likeButtonPressed(data, token))
+                  }}
+                />
+              ) : (
+                <AiOutlineHeart
+                  onClick={() => {
+                    const data = {
+                      postId: singlePost._id,
+                      token,
+                    }
+                    dispatch(likeButtonPressed(data, token))
+                  }}
+                />
+              )}
+              <span> {singlePost?.likes?.length}</span>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <FaRegCommentAlt />
               <FaCommentAlt /> <span> 5</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
