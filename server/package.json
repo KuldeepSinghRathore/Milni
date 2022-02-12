@@ -1,0 +1,25 @@
+{
+  "name": "milni-backend",
+  "version": "1.0.0",
+  "description": "A social media app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "SET NODE_ENV=DEVELOPEMENT& nodemon index.js",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon index.js"
+  },
+  "author": "kuldeep singh",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1",
+    "mongoose-referrence-validator": "^1.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "validator": "^13.7.0"
+  }
+}
