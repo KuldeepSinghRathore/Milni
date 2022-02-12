@@ -46,7 +46,6 @@ export const getAllPosts = createAsyncThunk(
 export const likeButtonPressed = createAsyncThunk(
   "posts/likeButtonPressed",
   async ({ postId, token }, { rejectWithValue }) => {
-    console.log(postId, "postId likeButtoPressed", token, "token")
     try {
       const response = await axios.post(
         `${API}/posts/like/${postId}`,

@@ -27,7 +27,6 @@ export const LoginForm = () => {
     e.preventDefault()
     if (loginData.password !== "" && loginData.email !== "") {
       await dispatch(loginPressed(loginData))
-      // console.log(JSON.stringify(loginData))
     }
   }
 

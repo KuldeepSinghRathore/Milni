@@ -29,13 +29,10 @@ const getAllPosts = catchAsyncHandler(async (req, res, next) => {
 })
 const getAllPostUsingId = catchAsyncHandler(async (req, res, next) => {
   const { userId } = req.params
-  console.log(userId, "userId")
   if (!userId) {
     return next(new Error("userId is required", 400))
   }
-  const posts = await Post.find({ userId: userId })
-    .sort({ _id: -1 })
-    .populate("userId")
+  const posts = await Post.find({ userId }).sort({ _id: -1 }).populate("userId")
   if (!posts) {
     return next(new Error("No post found", 404))
   }

@@ -13,7 +13,6 @@ export const PostForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (description !== "" && !controlUpload) {
-      // console.log(description, url)
       const postData = {
         description,
         url,

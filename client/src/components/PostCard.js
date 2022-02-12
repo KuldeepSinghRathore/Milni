@@ -12,12 +12,11 @@ export const isAlreadyExist = (postArr, userIdToCompare) => {
 }
 
 export const PostCard = ({ singlePost, userData }) => {
-  const { FaCommentAlt, FaRegCommentAlt } = require("react-icons/fa")
+  // const { FaCommentAlt, FaRegCommentAlt } = require("react-icons/fa")
   const { AiFillHeart, AiOutlineHeart } = require("react-icons/ai")
   const dispatch = useDispatch()
   const { token, userId } = useSelector((state) => state.users)
   const navigate = useNavigate()
-
   return (
     <>
       <div className="m-auto mb-4 flex w-full max-w-[596px]  gap-2 rounded-lg bg-white p-6 shadow-lg ">
@@ -48,7 +47,6 @@ export const PostCard = ({ singlePost, userData }) => {
           </div>
           <div className="flex   justify-between p-2">
             <div className="flex items-center gap-2">
-              {/* {console.log(isExist, "singlePost.likes")} */}
               {isAlreadyExist(singlePost?.likes, userId) ? (
                 <AiFillHeart
                   onClick={() => {

@@ -8,7 +8,6 @@ import { getProfileUserPosts, getUserProfileData } from "./profileSlice"
 
 export const Profile = () => {
   const { id } = useParams()
-  console.log(id, "mujhe kpi change kr rha hain")
   const { token, userId, userProfile } = useSelector((state) => state.users)
   const { userProfileStatus, userProfileData, userProfilePosts } = useSelector(
     (state) => state.profile

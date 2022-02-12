@@ -22,8 +22,6 @@ export const SignUpForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(signUpPressed(signUpData))
-    // navigate("/")
-    // console.log(JSON.stringify(signUpData))
   }
   return (
     <div>
