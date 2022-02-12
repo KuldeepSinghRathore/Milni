@@ -13,8 +13,8 @@ export const LoginForm = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
+    email: "guest@test.com",
+    password: "asdfasdf",
   })
   const handleChange = (e) => {
     setLoginData({
@@ -109,7 +109,7 @@ export const LoginForm = () => {
           </div>
 
           <div className="show_info mb-4 w-max text-sm font-bold text-red-500">
-            {error}
+            {status === "rejected" && error}
           </div>
 
           <div className="submit mb-4 cursor-pointer rounded border bg-blue-600 text-white">
