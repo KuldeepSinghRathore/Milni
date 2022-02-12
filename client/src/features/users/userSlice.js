@@ -87,20 +87,17 @@ export const userSlice = createSlice({
     [signUpPressed.fulfilled]: (state, action) => {
       localStorage.setItem(
         "username",
-        JSON.stringify(action.payload.user.username)
+        JSON.stringify(action.payload?.user.username)
       )
-      localStorage.setItem(
-        "userId",
-        JSON.stringify(action.payload.userProfile.user._id)
-      )
-      localStorage.setItem("token", JSON.stringify(action.payload.token))
-      localStorage.setItem("email", JSON.stringify(action.payload.user.email))
+      localStorage.setItem("userId", JSON.stringify(action.payload?.user?._id))
+      localStorage.setItem("token", JSON.stringify(action.payload?.token))
+      localStorage.setItem("email", JSON.stringify(action.payload?.user?.email))
       localStorage.setItem("isLoggedIn", JSON.stringify(true))
-      state.username = action.payload.user.username
-      state.userId = action.payload.user.userProfile._id
-      state.token = action.payload.token
-      state.email = action.payload.user.email
-      state.userProfile = action.payload.user
+      state.username = action.payload?.user?.username
+      state.userId = action.payload?.user?._id
+      state.token = action.payload?.token
+      state.email = action.payload?.user?.email
+      state.userProfile = action.payload?.user
       state.isLoggedIn = true
       state.status = "fulfilled"
     },

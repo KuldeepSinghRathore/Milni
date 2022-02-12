@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 export const SignUpForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { error } = useSelector((state) => state.users)
+  const { error, status } = useSelector((state) => state.users)
   const [signUpData, setSignUpData] = useState({
     username: "",
     email: "",
@@ -19,9 +19,10 @@ export const SignUpForm = () => {
       [e.target.name]: e.target.value,
     })
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(signUpPressed(signUpData))
+    await dispatch(signUpPressed(signUpData))
+    navigate("/")
   }
   return (
     <div>
@@ -75,7 +76,7 @@ export const SignUpForm = () => {
           </div>
           {error && (
             <div className="show_info mb-4 w-max text-sm text-red-400">
-              {error}
+              {status === "rejected" && error}
             </div>
           )}
           {signUpData.password.length === confirmPass.length &&

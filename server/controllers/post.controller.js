@@ -11,7 +11,8 @@ const createPost = catchAsyncHandler(async (req, res, next) => {
     ...req.body,
     userId,
   })
-  const post = await newPost.save()
+  let post = await newPost.save()
+  post = await post.populate("userId")
   res.status(201).json({
     success: true,
     message: "Post created successfully",

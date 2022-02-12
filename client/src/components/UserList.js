@@ -4,14 +4,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
 export const UserList = () => {
-  const { token, status, allUsers } = useSelector((state) => state.users)
+  const { token, allUsers } = useSelector((state) => state.users)
+  const { postStatus } = useSelector((state) => state.posts)
   const [searchTerm, setSearchTerm] = useState("")
   const dispatch = useDispatch()
   useEffect(() => {
-    if (token && status === "idle") {
+    if (postStatus === "idle" && token) {
       dispatch(getAllUsers(token))
     }
-  }, [token, status, dispatch])
+  }, [token, postStatus, dispatch])
 
   const searchable = (arr, searchTerm) => {
     return arr.filter((user) => {
