@@ -1,7 +1,12 @@
 import React, { useRef, useState } from "react"
 import { cloudinary_preset, cloudname } from "utils/API"
-
-export const CloudUpload = ({ url, setUrl, setControlUpload }) => {
+import { MdCancel } from "react-icons/md"
+export const CloudUpload = ({
+  url,
+  setUrl,
+  setControlUpload,
+  controlUpload,
+}) => {
   const [imageSrc, setImageSrc] = useState()
 
   const [image, setImage] = useState()
@@ -63,16 +68,18 @@ export const CloudUpload = ({ url, setUrl, setControlUpload }) => {
           )
         )}
         {imageSrc && !url && (
-          <p>
+          <div className="flex gap-3">
             {" "}
             <button
-              className="bg-blue-300 py-2 px-4 font-bold text-blue-900"
+              className="bg-blue-300 py-2 px-4 font-bold capitalize text-blue-900 "
               onClick={uploadImage}
             >
-              Upload Image
+              {controlUpload ? "Uploading.." : "upload"}
             </button>
-            <button onClick={restCloudUpload}>❌</button>
-          </p>
+            <button onClick={restCloudUpload}>
+              <MdCancel size={20} color={"red"} />
+            </button>
+          </div>
         )}
       </div>
     </div>

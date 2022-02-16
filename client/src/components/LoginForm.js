@@ -16,6 +16,7 @@ export const LoginForm = () => {
     email: "guest@test.com",
     password: "asdfasdf",
   })
+  const [loggingIn, setLoggingIn] = useState(false)
   const handleChange = (e) => {
     setLoginData({
       ...loginData,
@@ -26,12 +27,14 @@ export const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (loginData.password !== "" && loginData.email !== "") {
+      setLoggingIn(true)
       await dispatch(loginPressed(loginData))
     }
   }
 
   useEffect(() => {
     if (token && isLoggedIn) {
+      setLoggingIn(false)
       dispatch(resetAuthStatus())
     }
   }, [token, isLoggedIn, dispatch])
@@ -131,7 +134,7 @@ export const LoginForm = () => {
               <input
                 className="h-full cursor-pointer bg-transparent px-2 py-2 text-lg outline-none"
                 type="submit"
-                value="Login"
+                value={`${loggingIn ? "Logging...." : "Login"}`}
               />
             </div>
           </div>

@@ -23,6 +23,9 @@ export const UserList = () => {
     setSearchTerm(e.target.value)
   }
   const filteredUsers = searchable(allUsers, searchTerm)
+  if (filteredUsers.length === 0) {
+    return null
+  }
   return (
     <div className="flex max-w-fit flex-col justify-end gap-3 p-4 text-center">
       <h1 className="text-xl font-bold">UserList</h1>

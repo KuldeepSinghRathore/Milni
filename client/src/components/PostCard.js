@@ -11,7 +11,7 @@ export const isAlreadyExist = (postArr, userIdToCompare) => {
   )
 }
 
-export const PostCard = ({ singlePost, userData }) => {
+export const PostCard = ({ singlePost }) => {
   // const { FaCommentAlt, FaRegCommentAlt } = require("react-icons/fa")
   const { AiFillHeart, AiOutlineHeart } = require("react-icons/ai")
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ export const PostCard = ({ singlePost, userData }) => {
       <div className="m-auto mb-4 flex w-full max-w-[596px]  gap-2 rounded-lg bg-white p-6 shadow-lg ">
         <div>
           <span className="flex w-4 items-center justify-center rounded-[50%] border-2 border-blue-400 bg-slate-200 px-6 py-3 hover:border-red-600">
-            SR
+            {singlePost?.userId?.username?.substring(0, 2)}
           </span>
         </div>
         <div className="flex-1">
@@ -30,9 +30,9 @@ export const PostCard = ({ singlePost, userData }) => {
             <div>
               <h2
                 className="cursor-pointer text-xl font-bold"
-                onClick={() => navigate(`profile/${singlePost.userId._id}`)}
+                onClick={() => navigate(`profile/${singlePost?.userId?._id}`)}
               >
-                {singlePost.userId.username}
+                {singlePost?.userId?.username}
               </h2>
               <p className="text-xs">@{singlePost.userId.username}</p>
             </div>
@@ -42,6 +42,7 @@ export const PostCard = ({ singlePost, userData }) => {
                 src={singlePost.url}
                 alt=""
                 className="w-full  object-contain"
+                loading="lazy"
               />
             </div>
           </div>

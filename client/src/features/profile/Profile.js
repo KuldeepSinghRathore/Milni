@@ -5,6 +5,7 @@ import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getProfileUserPosts, getUserProfileData } from "./profileSlice"
+import { Loader } from "components/Loader"
 
 export const Profile = () => {
   const { id } = useParams()
@@ -22,6 +23,9 @@ export const Profile = () => {
       dispatch(getProfileUserPosts({ data, token }))
     }
   }, [id, dispatch, token])
+  if (userProfileStatus === "pending") {
+    return <Loader />
+  }
 
   return (
     <div>
@@ -30,7 +34,9 @@ export const Profile = () => {
       ) : (
         <ProfileCard singlePost={userProfileData} />
       )}
-      <p className=" mb-2 w-full text-center text-xl font-bold">Your Posts</p>
+      <p className=" mb-2 w-full text-center text-xl font-bold capitalize">
+        {userProfileData.username}'s Posts
+      </p>
       {userProfilePosts.map((singlePost) => (
         <PostCard singlePost={singlePost} key={singlePost._id} />
       ))}

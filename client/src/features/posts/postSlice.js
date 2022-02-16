@@ -73,7 +73,7 @@ export const postsSlice = createSlice({
       state.postStatus = "pending"
     },
     [createPostPressed.fulfilled]: (state, action) => {
-      state.posts.push(action.payload.post)
+      state.posts.unshift(action.payload.post)
       state.postStatus = "fulfilled"
     },
     [createPostPressed.rejected]: (state, action) => {
