@@ -2,6 +2,7 @@ import { likeButtonPressed } from "features/posts/postSlice"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 export const isAlreadyExist = (postArr, userIdToCompare) => {
   if (!postArr.length > 0) {
     return false
@@ -51,6 +52,15 @@ export const PostCard = ({ singlePost }) => {
               {isAlreadyExist(singlePost?.likes, userId) ? (
                 <AiFillHeart
                   onClick={() => {
+                    toast("🦄 Unlike Post!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    })
                     const data = {
                       postId: singlePost._id,
                       token,
@@ -61,6 +71,15 @@ export const PostCard = ({ singlePost }) => {
               ) : (
                 <AiOutlineHeart
                   onClick={() => {
+                    toast("🦄 Like Post!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    })
                     const data = {
                       postId: singlePost._id,
                       token,
