@@ -26,9 +26,9 @@ export const UserCard = ({ singlePost, setWhatToShow }) => {
           </div>
         </div>
         <div className="  flex cursor-pointer items-center gap-2 whitespace-nowrap p-2">
-          <span className=" rounded-sm bg-blue-400 px-4 py-2 hover:bg-blue-600">
+          {/* <span className=" rounded-sm bg-blue-400 px-4 py-2 hover:bg-blue-600">
             Edit Bio
-          </span>
+          </span> */}
           <span
             className="rounded-sm border-2 px-4 py-2 hover:bg-blue-600"
             onClick={() => setWhatToShow("followings")}

@@ -4,7 +4,6 @@ import { API } from "utils/API"
 
 const initialState = {
   userProfileData: [],
-  userProfilePosts: [],
   userProfileStatus: "idle",
   userProfileError: null,
   userProfileFollowers: [],
@@ -50,22 +49,6 @@ export const followButtonPressed = createAsyncThunk(
   }
 )
 
-export const getProfileUserPosts = createAsyncThunk(
-  "profile/getProfileUserPosts",
-  async ({ data, token }, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${API}/posts/${data.userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      return response.data
-    } catch (error) {
-      console.log(error)
-      return rejectWithValue(error.response.data)
-    }
-  }
-)
 export const getProfileUserFollowers = createAsyncThunk(
   "profile/getProfileUserFollowers",
   async ({ data, token }, { rejectWithValue }) => {
@@ -121,17 +104,7 @@ export const profileSlice = createSlice({
       state.userProfileError = action.payload.message
       state.userProfileStatus = "rejected"
     },
-    [getProfileUserPosts.pending]: (state) => {
-      state.userProfileStatus = "pending"
-    },
-    [getProfileUserPosts.fulfilled]: (state, action) => {
-      state.userProfilePosts = action.payload.userProfilePosts
-      state.userProfileStatus = "fulfilled"
-    },
-    [getProfileUserPosts.rejected]: (state, action) => {
-      state.userProfileError = action.payload.message
-      state.userProfileStatus = "rejected"
-    },
+
     [getProfileUserFollowers.pending]: (state) => {
       state.userProfileStatus = "pending"
     },

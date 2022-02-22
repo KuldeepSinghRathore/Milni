@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   getProfileUserFollowers,
   getProfileUserFollowings,
-  getProfileUserPosts,
   getUserProfileData,
 } from "./profileSlice"
 import { Loader } from "components/Loader"
 import { ShowUsers } from "components/ShowUsers"
+import { getProfileUserPosts } from "features/posts/postSlice"
 export const Profile = () => {
   const { id } = useParams()
   const { token, userId } = useSelector((state) => state.users)
@@ -20,10 +20,11 @@ export const Profile = () => {
   const {
     userProfileStatus,
     userProfileData,
-    userProfilePosts,
+
     userProfileFollowers,
     userProfileFollowings,
   } = useSelector((state) => state.profile)
+  const { userProfilePosts } = useSelector((state) => state.posts)
   console.log(userProfileFollowings, "user profile followings")
   const dispatch = useDispatch()
   useEffect(() => {
