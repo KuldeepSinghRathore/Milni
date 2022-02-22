@@ -16,6 +16,7 @@ export const LoginForm = () => {
     email: "guest@test.com",
     password: "asdfasdf",
   })
+  const [loggingIn, setLoggingIn] = useState(false)
   const handleChange = (e) => {
     setLoginData({
       ...loginData,
@@ -26,12 +27,14 @@ export const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (loginData.password !== "" && loginData.email !== "") {
+      setLoggingIn(true)
       await dispatch(loginPressed(loginData))
     }
   }
 
   useEffect(() => {
     if (token && isLoggedIn) {
+      setLoggingIn(false)
       dispatch(resetAuthStatus())
     }
   }, [token, isLoggedIn, dispatch])
@@ -111,30 +114,11 @@ export const LoginForm = () => {
           <div className="show_info mb-4 w-max text-sm font-bold text-red-500">
             {status === "rejected" && error}
           </div>
-
-          <div className="submit mb-4 cursor-pointer rounded border bg-blue-600 text-white">
-            <div className="wrapper mx-auto flex w-max">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="my-auto w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"
-                />
-              </svg>
-              <input
-                className="h-full cursor-pointer bg-transparent px-2 py-2 text-lg outline-none"
-                type="submit"
-                value="Login"
-              />
-            </div>
-          </div>
+          <input
+            className="mb-4 h-full w-full cursor-pointer cursor-pointer rounded border bg-transparent bg-gray-800 px-2 py-2 text-lg text-white outline-none"
+            type="submit"
+            value={`${loggingIn ? "Logging...." : "Login"}`}
+          />
         </form>
       </div>
     </div>

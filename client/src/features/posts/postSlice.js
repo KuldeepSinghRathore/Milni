@@ -6,6 +6,7 @@ const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
 const initialState = {
   posts: [],
   postStatus: "idle",
+  userProfilePosts: [],
   error: null,
 }
 
@@ -63,7 +64,22 @@ export const likeButtonPressed = createAsyncThunk(
     }
   }
 )
-
+export const getProfileUserPosts = createAsyncThunk(
+  "posts/getProfileUserPosts",
+  async ({ data, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API}/posts/${data.userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -73,7 +89,7 @@ export const postsSlice = createSlice({
       state.postStatus = "pending"
     },
     [createPostPressed.fulfilled]: (state, action) => {
-      state.posts.push(action.payload.post)
+      state.posts.unshift(action.payload.post)
       state.postStatus = "fulfilled"
     },
     [createPostPressed.rejected]: (state, action) => {
@@ -91,15 +107,35 @@ export const postsSlice = createSlice({
       state.error = action.payload.message
       state.postStatus = "rejected"
     },
+    [getProfileUserPosts.pending]: (state) => {
+      state.postStatus = "pending"
+    },
+    [getProfileUserPosts.fulfilled]: (state, action) => {
+      state.userProfilePosts = action.payload.userProfilePosts
+      state.postStatus = "fulfilled"
+    },
+    [getProfileUserPosts.rejected]: (state, action) => {
+      state.error = action.payload.message
+      state.postStatus = "rejected"
+    },
     [likeButtonPressed.pending]: (state) => {
       state.postStatus = "pending"
     },
     [likeButtonPressed.fulfilled]: (state, action) => {
       // state.posts = action.payload
+
       const postIndex = state.posts.findIndex(
         (post) => post._id === action.payload.updatedLikes._id
       )
       state.posts[postIndex].likes = action.payload.updatedLikes.likes
+
+      if (state.userProfilePosts.length !== 0) {
+        const profilePostIndex = state.userProfilePosts.findIndex(
+          (post) => post._id === action.payload.updatedLikes._id
+        )
+        state.userProfilePosts[profilePostIndex].likes =
+          action.payload.updatedLikes.likes
+      }
       state.postStatus = "fulfilled"
     },
     [likeButtonPressed.rejected]: (state, action) => {

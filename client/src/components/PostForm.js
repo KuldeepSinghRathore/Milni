@@ -1,6 +1,7 @@
 import { createPostPressed } from "features/posts/postSlice"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import { CloudUpload } from "./CloudUpload"
 
 export const PostForm = () => {
@@ -13,6 +14,15 @@ export const PostForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (description !== "" && !controlUpload) {
+      toast("🦄 Creating Post!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
       const postData = {
         description,
         url,
@@ -44,11 +54,12 @@ export const PostForm = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        {/* <input type="file" name="file" /> */}
+
         <CloudUpload
           url={url}
           setUrl={setUrl}
           setControlUpload={setControlUpload}
+          controlUpload={controlUpload}
         />
         <div className="flex flex-col justify-between gap-3">
           <input

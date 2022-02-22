@@ -9,20 +9,16 @@ import { PrivateRoutes } from "utils/PrivateRoutes"
 import { Login } from "./features/users/Login"
 import { SignUp } from "./features/users/SignUp"
 import { HomePage } from "./pages/HomePage"
-
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 function App() {
   const pathName = useLocation().pathname
+
   return (
     <div className="">
+      <ToastContainer />
       <Header />
       <div className="mx-auto mt-20 mb-14  flex max-w-7xl items-start justify-between">
-        {/* <div
-          className={`hidden lg:block ${
-            (pathName === "/login" || pathName === "/signup") && `lg:hidden`
-          }`}
-        >
-          <UserList />
-        </div> */}
         <div className="mx-auto ">
           <Routes>
             <Route

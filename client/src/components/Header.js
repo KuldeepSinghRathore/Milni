@@ -12,9 +12,7 @@ export const Header = () => {
           Milni
         </Link>
       </div>
-      <Link to="/login" className="m-3 font-bold">
-        Login
-      </Link>
+
       <div className="flex cursor-pointer items-center gap-2">
         {users?.username ? (
           <>

@@ -13,6 +13,7 @@ export const SignUpForm = () => {
     password: "",
   })
   const [confirmPass, setConfirmPass] = useState("")
+  const [signingUp, setSigningUp] = useState(false)
   const handleChange = (e) => {
     setSignUpData({
       ...signUpData,
@@ -21,6 +22,7 @@ export const SignUpForm = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSigningUp(true)
     await dispatch(signUpPressed(signUpData))
     navigate("/")
   }
@@ -85,25 +87,22 @@ export const SignUpForm = () => {
                 Password Does Not Match
               </div>
             )}
-          <div className="submit mb-4 cursor-pointer rounded border bg-blue-600 text-white">
-            <div className="wrapper mx-auto flex w-max">
-              {signUpData.password === confirmPass ? (
-                <input
-                  className="h-full cursor-pointer bg-transparent px-2 py-2 text-lg outline-none"
-                  type="submit"
-                  value="SignUp"
-                />
-              ) : (
-                <>
-                  <button
-                    disabled={true}
-                    className="h-full cursor-pointer px-2 py-2 text-lg outline-none "
-                  >
-                    SignUp
-                  </button>
-                </>
-              )}
-            </div>
+
+          <div className="">
+            {signUpData.password === confirmPass ? (
+              <input
+                className="mb-4 h-full w-full  cursor-pointer rounded border bg-transparent bg-gray-800 px-2 py-2 text-lg text-white outline-none"
+                type="submit"
+                value={`${signingUp ? "SigningUp...." : "Sign Up"}`}
+              />
+            ) : (
+              <button
+                disabled={true}
+                className="mb-4 h-full w-full  cursor-pointer rounded border bg-transparent  px-2 py-2 text-lg text-black shadow-sm outline-none"
+              >
+                SignUp
+              </button>
+            )}
           </div>
         </form>
       </div>
