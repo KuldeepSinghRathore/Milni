@@ -18,6 +18,7 @@ export const PostCard = ({ singlePost }) => {
   const dispatch = useDispatch()
   const { token, userId } = useSelector((state) => state.users)
   const navigate = useNavigate()
+
   return (
     <>
       <div className="m-auto mb-4 flex w-full max-w-[596px]  gap-2 rounded-lg bg-white p-6 shadow-lg ">
@@ -40,7 +41,9 @@ export const PostCard = ({ singlePost }) => {
             <div>
               <p>{singlePost.description}</p>
               <img
-                src={singlePost.url}
+                src={
+                  singlePost?.url && `https:${singlePost?.url?.split(":")[1]}`
+                }
                 alt=""
                 className="w-full  object-contain"
                 loading="lazy"

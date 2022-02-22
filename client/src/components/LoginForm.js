@@ -115,7 +115,7 @@ export const LoginForm = () => {
             {status === "rejected" && error}
           </div>
           <input
-            className="mb-4 h-full w-full cursor-pointer cursor-pointer rounded border bg-transparent bg-gray-800 px-2 py-2 text-lg text-white outline-none"
+            className="mb-4 h-full w-full  cursor-pointer rounded border bg-transparent bg-gray-800 px-2 py-2 text-lg text-white outline-none"
             type="submit"
             value={`${loggingIn ? "Logging...." : "Login"}`}
           />
