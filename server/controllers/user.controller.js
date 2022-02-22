@@ -144,9 +144,13 @@ const followUser = catchAsyncHandler(async (req, res, next) => {
     )
     user.following = user.following.filter((i) => i.toString() !== followId)
     let updateFollowUser = await followUser.save()
-    updateFollowUser = await updateFollowUser.populate("followers")
+    updateFollowUser = await updateFollowUser.populate([
+      "followers",
+      "following",
+    ])
+
     let updateUser = await user.save()
-    updateUser = await updateUser.populate("following")
+    updateUser = await updateUser.populate(["followers", "following"])
     return res.status(200).json({
       success: true,
       message: "User UnFollowed Successfully",
@@ -157,11 +161,10 @@ const followUser = catchAsyncHandler(async (req, res, next) => {
   followUser.followers.push(userId)
   user.following.push(followId)
   let updateFollowUser = await followUser.save()
-  updateFollowUser = await updateFollowUser.populate("followers")
-  let updateUser = await user.save()
-  updateUser = await updateUser.populate("following")
+  updateFollowUser = await updateFollowUser.populate(["followers", "following"])
 
-  // const followData= await updateFollowUser.populate("followers").execPopulate()
+  let updateUser = await user.save()
+  updateUser = await updateUser.populate(["followers", "following"])
 
   return res.status(200).json({
     success: true,
@@ -171,10 +174,35 @@ const followUser = catchAsyncHandler(async (req, res, next) => {
   })
 })
 
+const getFollowers = catchAsyncHandler(async (req, res, next) => {
+  const { userId } = req.params
+  console.log("userId of requester", userId)
+  const { followers } = await User.findById(userId).populate("followers")
+  console.log("This is followers", followers)
+  return res.status(200).json({
+    success: true,
+    message: "Followers Fetched Successfully",
+    userProfileFollowers: followers,
+  })
+})
+const getFollowings = catchAsyncHandler(async (req, res, next) => {
+  const { userId } = req.params
+  console.log("userId of requester", userId)
+  const { following } = await User.findById(userId).populate("following")
+  console.log("This is followings", following)
+  return res.status(200).json({
+    success: true,
+    message: "Followings Fetched Successfully",
+    userProfileFollowings: following,
+  })
+})
+
 module.exports = {
   signupUser,
   loginUser,
   getAllUsers,
   getUserProfileData,
   followUser,
+  getFollowers,
+  getFollowings,
 }

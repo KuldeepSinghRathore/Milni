@@ -1,6 +1,8 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
 export const NotFound = () => {
+  const navigate = useNavigate()
   return (
     <div className="py-60 text-center lg:py-36">
       <h1 className="py-2 text-7xl font-bold text-indigo-700 md:text-9xl">
@@ -14,7 +16,9 @@ export const NotFound = () => {
         URL in address bar and try again.
       </p>
       <div className="text-md flex cursor-pointer justify-center text-indigo-700">
-        <div className="hover:underline">Go back</div>
+        <div className="hover:underline" onClick={() => navigate("/")}>
+          Go back
+        </div>
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
