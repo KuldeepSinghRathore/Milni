@@ -14,7 +14,6 @@ export const ProfileCard = ({ singlePost, setWhatToShow }) => {
   )
     ? true
     : false
-  console.log(isAlreadyFollowed, "isAlreadyFollowed")
   const dispatch = useDispatch()
 
   return (

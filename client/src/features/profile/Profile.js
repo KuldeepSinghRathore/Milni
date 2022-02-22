@@ -25,7 +25,6 @@ export const Profile = () => {
     userProfileFollowings,
   } = useSelector((state) => state.profile)
   const { userProfilePosts } = useSelector((state) => state.posts)
-  console.log(userProfileFollowings, "user profile followings")
   const dispatch = useDispatch()
   useEffect(() => {
     const data = {
@@ -41,7 +40,6 @@ export const Profile = () => {
   if (userProfileStatus === "pending") {
     return <Loader />
   }
-  console.log("userProfileFollowers l35 profile.js", userProfileFollowers)
   return (
     <div>
       {id === userId ? (

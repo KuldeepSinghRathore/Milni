@@ -176,9 +176,7 @@ const followUser = catchAsyncHandler(async (req, res, next) => {
 
 const getFollowers = catchAsyncHandler(async (req, res, next) => {
   const { userId } = req.params
-  console.log("userId of requester", userId)
   const { followers } = await User.findById(userId).populate("followers")
-  console.log("This is followers", followers)
   return res.status(200).json({
     success: true,
     message: "Followers Fetched Successfully",
@@ -187,9 +185,7 @@ const getFollowers = catchAsyncHandler(async (req, res, next) => {
 })
 const getFollowings = catchAsyncHandler(async (req, res, next) => {
   const { userId } = req.params
-  console.log("userId of requester", userId)
   const { following } = await User.findById(userId).populate("following")
-  console.log("This is followings", following)
   return res.status(200).json({
     success: true,
     message: "Followings Fetched Successfully",
