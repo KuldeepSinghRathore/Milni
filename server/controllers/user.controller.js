@@ -41,7 +41,7 @@ const signupUser = catchAsyncHandler(async (req, res, next) => {
       { userId: saveNewUser._id },
       process.env.JWT_SECRET,
       {
-        expiresIn: "7d",
+        expiresIn: "90d",
       }
     )
     saveNewUser.password = undefined
@@ -144,13 +144,10 @@ const followUser = catchAsyncHandler(async (req, res, next) => {
     )
     user.following = user.following.filter((i) => i.toString() !== followId)
     let updateFollowUser = await followUser.save()
-    updateFollowUser = await updateFollowUser.populate([
-      "followers",
-      "following",
-    ])
-
+    updateFollowUser = await updateFollowUser.populate("followers following")
     let updateUser = await user.save()
-    updateUser = await updateUser.populate(["followers", "following"])
+    updateUser = await updateUser.populate("following followers")
+
     return res.status(200).json({
       success: true,
       message: "User UnFollowed Successfully",
@@ -161,10 +158,9 @@ const followUser = catchAsyncHandler(async (req, res, next) => {
   followUser.followers.push(userId)
   user.following.push(followId)
   let updateFollowUser = await followUser.save()
-  updateFollowUser = await updateFollowUser.populate(["followers", "following"])
-
+  updateFollowUser = await updateFollowUser.populate("followers following")
   let updateUser = await user.save()
-  updateUser = await updateUser.populate(["followers", "following"])
+  updateUser = await updateUser.populate("followers following")
 
   return res.status(200).json({
     success: true,
